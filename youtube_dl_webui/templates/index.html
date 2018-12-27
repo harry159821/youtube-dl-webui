@@ -80,7 +80,7 @@
                             <tr>
                                 <th width="30px">#</th>
                                 <th width="25ox">State</th>
-                                <th>Name</th>
+                                <th>File\Name</th>
                                 <th width="90px">Total Size</th>
                                 <th width="230px">Progress</th>
                                 <th width="100px">Down Speed</th>
@@ -93,7 +93,10 @@
                                 <td v-clock style="font-size: 16px">
                                     <i v-bind:style="{color: stateIcon(video.state).color}" v-bind:class="['fa', stateIcon(video.state).icon]" aria-hidden="true"></i>
                                 </td>
-                                <td>{{"{{video.title}}"}}</td>
+                                <!-- <td>{{"{{video.title}}"}}</td> -->
+                                <td>
+                                    <a :href="video.filename">{{"{{video.title}}"}}</a>
+                                </td>
                                 <td v-cloak>{{"{{bitsToHuman(video.total_bytes)}}"}}</td>
                                 <td v-cloak>
                                     <div class="progress-bar">
@@ -253,5 +256,15 @@
         <script type="text/javascript" src="{{ url_for('static', filename='js/vue-resource.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/vue-toast.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/global.js') }}"></script>
+        <style type="text/css">
+            td a {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            td {
+                border: 1px solid black;
+            }
+        </style>
     </body>
 </html>

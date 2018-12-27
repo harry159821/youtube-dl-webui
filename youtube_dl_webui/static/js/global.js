@@ -3,7 +3,7 @@ var videoDownload = (function (Vue, extendAM){
     var VueToast = window.vueToasts ? window.vueToasts.default || window.vueToasts : window.vueToasts;
     videoDownload.vm = null;
     videoDownload.tasksData = {
-        headPath: 'http://localhost:5000/youtube/',
+        headPath: 'http://localhost:5000/',
         videoList: [],
         videoListCopy: [],
         showModal: false,

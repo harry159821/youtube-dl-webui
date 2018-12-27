@@ -12,6 +12,7 @@ from copy import deepcopy
 MSG = None
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 MSG_INVALID_REQUEST = {'status': 'error', 'errmsg': 'invalid request'}
 

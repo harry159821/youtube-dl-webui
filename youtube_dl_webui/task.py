@@ -113,7 +113,7 @@ class TaskManager(object):
     are in invalid state or finished state, which only have database recoards
     but memory instance.
     """
-    ExerptKeys = ['tid', 'state', 'percent', 'total_bytes', 'title', 'eta', 'speed']
+    ExerptKeys = ['tid', 'state', 'percent', 'total_bytes', 'title', 'eta', 'speed', 'filename']
 
     def __init__(self, db, msg_cli, conf):
         self.logger = logging.getLogger('ydl_webui')
@@ -287,6 +287,7 @@ class TaskManager(object):
             dl_dir = self._conf['general']['download_dir']
             filepath = os.path.join(dl_dir, filename)
             if os.path.isfile(filepath):
+                data['filename'] = filepath
                 data['total_bytes'] = str(os.stat(filepath).st_size)
         self._db.progress_update_addition(tid, data)
 
