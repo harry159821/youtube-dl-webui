@@ -90,3 +90,6 @@ ENV/
 
 # Other file types
 *.swp
+
+# Temp Folder
+test/test

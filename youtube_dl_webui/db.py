@@ -289,6 +289,15 @@ class DataBase(object):
                     }
         self.update(tid, {'task_status': db_data})
 
+    def progress_update_addition(self, tid, db_data):
+        # db_data = {
+        #             'filename':             r"POWER PLANT  MECHANICAL MAINTENACE PPM103 P1-eg_LFg2mP30.mp4",
+        #             'total_bytes':          "5345522", # 4345522
+        #         }
+        # self.progress_update_addition("11e14a5accaa516ebee1c1f7255a7642478fc8b4", db_data)
+        self.logger.debug("update addition=%s" %(db_data['filename']))
+        self.update(tid, {'task_status': db_data})
+
     def launch_unfinished(self):
         self.db.execute('SELECT tid FROM task_status WHERE state in (?)',
                         (state_index['downloading'],))

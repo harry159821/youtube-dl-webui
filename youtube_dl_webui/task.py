@@ -281,6 +281,15 @@ class TaskManager(object):
 
         self._db.progress_update(tid, data, task.elapsed)
 
+    def progress_update_addition(self, tid, data):
+        if 'filename' in data:
+            filename = data['filename']
+            dl_dir = self._conf['general']['download_dir']
+            filepath = os.path.join(dl_dir, filename)
+            if os.path.isfile(filepath):
+                data['total_bytes'] = str(os.stat(filepath).st_size)
+        self._db.progress_update_addition(tid, data)
+
     def launch_unfinished(self):
         tid_list = self._db.launch_unfinished()
 

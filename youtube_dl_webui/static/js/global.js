@@ -3,7 +3,7 @@ var videoDownload = (function (Vue, extendAM){
     var VueToast = window.vueToasts ? window.vueToasts.default || window.vueToasts : window.vueToasts;
     videoDownload.vm = null;
     videoDownload.tasksData = {
-        headPath: 'http://localhost:5000/',
+        headPath: 'http://localhost:5000/youtube/',
         videoList: [],
         videoListCopy: [],
         showModal: false,
@@ -76,7 +76,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 addTask: function(){
                     var _self = this;
-                    var url = _self.headPath + 'task';
+                    var url = _self.headPath + 'youtube/task';
                     for (var key in _self.modalData.add.ydl_opts) {
                         if (_self.modalData.add.ydl_opts[key].trim() == '')
                             delete _self.modalData.add.ydl_opts[key];
@@ -90,7 +90,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 updatePreference: function () {
                     var _self = this;
-                    var url = _self.headPath + 'config';
+                    var url = _self.headPath + 'youtube/config';
                     Vue.http.post(url, _self.modalData.preference, {emulateJSON: false}).then(function(res){
                         console.log("Successfully");
                     }, function(err){
@@ -99,7 +99,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 removeTask: function(){
                     var _self = this;
-                    var url = _self.headPath + 'task/tid/' + (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid);
+                    var url = _self.headPath + 'youtube/task/tid/' + (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid);
                     if(_self.modalData.remove.removeFile){
                         url += '?del_file=true';
                     }
@@ -118,7 +118,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 pauseTask: function(){
                     var _self = this;
-                    var url = _self.headPath + 'task/tid/' +  (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '?act=pause';
+                    var url = _self.headPath + 'youtube/task/tid/' +  (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '?act=pause';
                     Vue.http.put(url).then(function(res){
                         _self.showAlertToast('Task Pause', 'info');
                         that.getTaskList();
@@ -128,7 +128,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 resumeTask: function(){
                     var _self = this;
-                    var url = _self.headPath + 'task/tid/' + (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '?act=resume';
+                    var url = _self.headPath + 'youtube/task/tid/' + (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '?act=resume';
                     Vue.http.put(url).then(function(res){
                         _self.showAlertToast('Task Resume', 'info');
                         that.getTaskList();
@@ -142,7 +142,7 @@ var videoDownload = (function (Vue, extendAM){
                 },
                 preference: function() {
                     var _self = this;
-                    var url = _self.headPath + 'config';
+                    var url = _self.headPath + 'youtube/config';
 
                     this.showModal = true;
                     this.modalType = 'updatePreference';
@@ -163,7 +163,7 @@ var videoDownload = (function (Vue, extendAM){
                 selected: function(index){
                     var _self = this;
                     this.currentSelected = index;
-                    _self.taskInfoUrl = _self.headPath + 'task/tid/' +  (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '/status';
+                    _self.taskInfoUrl = _self.headPath + 'youtube/task/tid/' +  (_self.videoList[_self.currentSelected] && _self.videoList[_self.currentSelected].tid) + '/status';
                     _self.getTaskInfoById();
                 },
                 getTaskInfoById: function(){
@@ -270,7 +270,7 @@ var videoDownload = (function (Vue, extendAM){
 
     videoDownload.getTaskList = function() {
         var that = videoDownload;
-        var url = that.tasksData.headPath + 'task/list';
+        var url = that.tasksData.headPath + 'youtube/task/list';
         url = url + '?state=' + that.tasksData.status;
         Vue.http.get(url).then(function(res){
             var resData = JSON.parse(res.body);

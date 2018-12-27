@@ -22,6 +22,7 @@ from .worker import Worker
 from .config import ydl_conf, conf
 from .task import TaskManager, Task
 from .msg import MsgMgr
+import re
 
 class WebMsgDispatcher(object):
     logger = logging.getLogger('ydl_webui')
@@ -200,6 +201,19 @@ class WorkMsgDispatcher(object):
     @classmethod
     def event_log(cls, svr, event, data, arg):
         tid, log = data['tid'], data['data']
+
+        ansi_escape_msg = log['msg']
+        if "ffmpeg" in ansi_escape_msg and "Merging" in ansi_escape_msg:
+            # Update Database With Merging Filename
+            result = re.search(r'Merging formats into "(.*?)"', ansi_escape_msg)
+            if result != None:
+                filename = result.groups()[0]
+                db_data = {
+                    'filename':             filename,
+                    # 'total_bytes':          "5345522",
+                }
+                cls._task_mgr.progress_update_addition(tid, db_data)
+
         cls._task_mgr.update_log(tid, log)
 
     @classmethod
