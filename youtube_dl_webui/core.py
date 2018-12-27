@@ -192,6 +192,7 @@ class WorkMsgDispatcher(object):
     @classmethod
     def init(cls, task_mgr):
         cls._task_mgr = task_mgr
+        cls.temp_info = {}
 
     @classmethod
     def event_info_dict(cls, svr, event, data, arg):
@@ -212,7 +213,13 @@ class WorkMsgDispatcher(object):
                     'filename':             filename,
                     # 'total_bytes':          "5345522",
                 }
+                cls.temp_info[tid] = db_data
+
+        if "Deleting original file" in ansi_escape_msg:
+            if tid in cls.temp_info:
+                db_data = cls.temp_info[tid]
                 cls._task_mgr.progress_update_addition(tid, db_data)
+                cls.temp_info.pop(tid)
 
         cls._task_mgr.update_log(tid, log)
 
